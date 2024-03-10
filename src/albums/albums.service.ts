@@ -4,6 +4,7 @@ import {
   CreateNewAlbumDto,
   UpdateAlbumDto,
 } from 'src/dto/data-transfer-objects';
+import { Album } from 'src/types';
 import { v4 as uuidv4, validate } from 'uuid';
 
 @Injectable()
@@ -37,7 +38,7 @@ export class AlbumsService {
       );
     }
 
-    const newAlbum = {
+    const newAlbum: Album = {
       id: uuidv4(),
       name: dto.name,
       year: dto?.year,
@@ -64,18 +65,23 @@ export class AlbumsService {
       throw new HttpException(`Album was not found`, HttpStatus.NOT_FOUND);
     }
 
-    if (!dto.name || typeof dto.name !== 'string') {
+    if (
+      (dto.name && typeof dto.name !== 'string') ||
+      typeof dto.name !== 'string' ||
+      typeof dto.artistId !== 'string' ||
+      typeof dto.year !== 'number'
+    ) {
       throw new HttpException(
         `Bad request. body does not contain required fields`,
         HttpStatus.BAD_REQUEST,
       );
     }
 
-    const updatedAlbum = {
+    const updatedAlbum: Album = {
       id: id,
-      name: dto.name,
-      year: dto?.year,
-      artistId: dto?.artistId,
+      name: dto.name || album.name,
+      year: dto.year || album.year,
+      artistId: dto.artistId,
     };
 
     database.albums[albumIndex] = updatedAlbum;

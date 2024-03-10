@@ -4,6 +4,7 @@ import {
   CreateNewTrackDto,
   UpdateTrackDto,
 } from 'src/dto/data-transfer-objects';
+import { Track } from 'src/types';
 import { v4 as uuidv4, validate } from 'uuid';
 
 @Injectable()
@@ -41,7 +42,7 @@ export class TracksService {
       );
     }
 
-    const newTrack = {
+    const newTrack: Track = {
       id: uuidv4(),
       name: dto.name,
       artistId: dto?.artistId,
@@ -80,11 +81,11 @@ export class TracksService {
       );
     }
 
-    const updatedTrack = {
+    const updatedTrack: Track = {
       id: id,
       name: dto.name,
-      artistId: dto?.artistId,
-      albumId: dto?.albumId,
+      artistId: dto.artistId || track.artistId,
+      albumId: dto.albumId || track.albumId,
       duration: dto.duration,
     };
 
