@@ -14,3 +14,10 @@ export type Track = {
   albumId: string | null;
   duration: number;
 };
+
+export type Album = {
+  id: string;
+  name: string;
+  year: number | null;
+  artistId: string | null;
+};
