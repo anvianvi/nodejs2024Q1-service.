@@ -1,3 +1,6 @@
+import { Track, User } from 'src/types';
+
 export const database = {
-  users: [],
+  users: new Array<User>(),
+  tracks: new Array<Track>(),
 };

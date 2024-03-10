@@ -20,6 +20,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
+  @HttpCode(HttpStatus.OK)
   getAllUsers() {
     return this.usersService.getAllUsers();
   }

@@ -6,3 +6,11 @@ export type User = {
   createdAt: number;
   updatedAt: number;
 };
+
+export type Track = {
+  id: string;
+  name: string;
+  artistId: string;
+  albumId: string;
+  duration: number;
+};
