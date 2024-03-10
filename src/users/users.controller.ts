@@ -1,4 +1,12 @@
-import { Body, Controller, Get, HttpCode, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateNewUserDto } from 'src/dto/data-transfer-objects';
 
@@ -7,13 +15,19 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  getAll() {
+  getAllUsers() {
     return this.usersService.getAllUsers();
   }
 
+  @Get(':id')
+  @HttpCode(HttpStatus.OK)
+  getUserById(@Param('id') id: string) {
+    return this.usersService.getUserById(id);
+  }
+
   @Post()
-  @HttpCode(201)
-  createUser(@Body() dto: CreateNewUserDto) {
+  @HttpCode(HttpStatus.CREATED)
+  createNewUser(@Body() dto: CreateNewUserDto) {
     return this.usersService.createNewUser(dto);
   }
 }
