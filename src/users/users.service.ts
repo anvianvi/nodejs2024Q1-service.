@@ -15,7 +15,7 @@ export class UsersService {
 
     if (!login || !password) {
       throw new BadRequestException(
-        'Bad request. Body does not contain required fields.',
+        'Request body does not contain required fields.',
       );
     }
 
@@ -24,8 +24,8 @@ export class UsersService {
       login,
       password,
       version: 1,
-      createAt: Date.now(),
-      updateAt: Date.now(),
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
     };
 
     database.users.push(newUser);

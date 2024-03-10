@@ -3,6 +3,6 @@ export type User = {
   login: string;
   password: string;
   version: number;
-  createAt: number;
-  updateAt: number;
+  createdAt: number;
+  updatedAt: number;
 };
