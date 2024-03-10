@@ -15,25 +15,27 @@ import {
   UpdateTrackDto,
 } from 'src/dto/data-transfer-objects';
 
-@Controller('tracks')
+@Controller('track')
 export class TracksController {
   constructor(private readonly tracksService: TracksService) {}
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  getAllTraks() {
-    return this.tracksService.getAllTraks();
+  getAllTracks() {
+    console.log('i try to get all traks');
+    return this.tracksService.getAllTracks();
   }
 
   @Get(':id')
+  @HttpCode(HttpStatus.OK)
   getTrackById(@Param('id') id: string) {
     return this.tracksService.getTrackById(id);
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() createNewTrackDto: CreateNewTrackDto) {
-    return this.tracksService.addNewTrack(createNewTrackDto);
+  createNewTrack(@Body() createNewTrackDto: CreateNewTrackDto) {
+    return this.tracksService.createNewTrack(createNewTrackDto);
   }
 
   @Put(':id')

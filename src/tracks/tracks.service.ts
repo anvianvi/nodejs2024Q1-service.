@@ -1,36 +1,111 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { database } from 'src/database/storage';
 import {
   CreateNewTrackDto,
   UpdateTrackDto,
 } from 'src/dto/data-transfer-objects';
+import { v4 as uuidv4, validate } from 'uuid';
 
 @Injectable()
 export class TracksService {
-  getAllTraks() {
-    return `This action returns all tracks`;
+  getAllTracks() {
+    return database.tracks;
   }
 
   getTrackById(id: string) {
-    return `This action returns a #${id} track`;
-    //     Server should answer with status code 400 and corresponding message if trackId is invalid (not uuid)
-    // Server should answer with status code 404 and corresponding message if record with id === trackId doesn't exist
+    if (!validate(id)) {
+      throw new HttpException(
+        `Bad request. userId is invalid (not uuid)`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const track = database.tracks.find((track) => track.id === id);
+
+    if (!track) {
+      throw new HttpException(`Track was not found`, HttpStatus.NOT_FOUND);
+    }
+
+    return track;
   }
 
-  addNewTrack(createNewTrackDto: CreateNewTrackDto) {
-    // Server should answer with status code 400 and corresponding message if request body does not contain required fields
+  createNewTrack(dto: CreateNewTrackDto) {
+    if (
+      !(dto.name && dto.duration) ||
+      typeof dto?.name !== 'string' ||
+      typeof dto?.duration !== 'number'
+    ) {
+      throw new HttpException(
+        `Bad request. body does not contain required fields`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
 
-    return `This action adds a new track ${createNewTrackDto}`;
+    const newTrack = {
+      id: uuidv4(),
+      name: dto.name,
+      artistId: dto?.artistId,
+      albumId: dto?.albumId,
+      duration: dto.duration,
+    };
+
+    database.tracks.push(newTrack);
+
+    return newTrack;
   }
 
-  updateTrackInfo(id: string, updateTrackDto: UpdateTrackDto) {
-    //  Server should answer with status code 400 and corresponding message if trackId is invalid (not uuid)
-    // Server should answer with status code 404 and corresponding message if record with id === trackId doesn't exist
-    return `This action updates a #${updateTrackDto + id} track`;
+  updateTrackInfo(id: string, dto: UpdateTrackDto) {
+    if (!validate(id)) {
+      throw new HttpException(
+        `Bad request. trackId is invalid (not uuid)`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const track = database.tracks.find((track) => track.id === id);
+    const trackIndex = database.tracks.findIndex((track) => track.id === id);
+
+    if (!track) {
+      throw new HttpException(`Track was not found`, HttpStatus.NOT_FOUND);
+    }
+
+    if (
+      !(dto.name && dto.duration) ||
+      typeof dto?.name !== 'string' ||
+      typeof dto?.duration !== 'number'
+    ) {
+      throw new HttpException(
+        `Bad request. body does not contain required fields`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const updatedTrack = {
+      id: id,
+      name: dto.name,
+      artistId: dto?.artistId,
+      albumId: dto?.albumId,
+      duration: dto.duration,
+    };
+
+    database.tracks[trackIndex] = updatedTrack;
+
+    return database.tracks[trackIndex];
   }
 
   deleteTrackById(id: string) {
-    //     Server should answer with status code 400 and corresponding message if trackId is invalid (not uuid)
-    // Server should answer with status code 404 and corresponding message if record with id === trackId doesn't exist
-    return `This action removes a #${id} track`;
+    if (!validate(id)) {
+      throw new HttpException(
+        `Bad request. trackId is invalid (not uuid)`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    const trackIndex = database.tracks.findIndex((track) => track.id === id);
+
+    if (trackIndex === -1) {
+      throw new HttpException(`Track was not found.`, HttpStatus.NOT_FOUND);
+    }
+
+    database.tracks.splice(trackIndex, 1);
   }
 }
