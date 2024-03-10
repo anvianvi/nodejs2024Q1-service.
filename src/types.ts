@@ -7,6 +7,12 @@ export type User = {
   updatedAt: number;
 };
 
+export type Artist = {
+  id: string;
+  name: string;
+  grammy: boolean | null;
+};
+
 export type Track = {
   id: string;
   name: string;
