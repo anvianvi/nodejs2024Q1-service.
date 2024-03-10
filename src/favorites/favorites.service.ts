@@ -5,8 +5,25 @@ import { validate } from 'uuid';
 
 @Injectable()
 export class FavoritesService {
+  constructor() {}
+
   getAllFavorites() {
-    return database.favorites;
+    function findFavorites(
+      favorites: string[],
+      items: Artist[] | Track[] | Album[],
+    ): Artist[] | Track[] | Album[] {
+      return favorites
+        .map((id: string) =>
+          items.find((item: Artist | Track | Album) => item.id === id),
+        )
+        .filter(Boolean) as Artist[] | Track[] | Album[];
+    }
+
+    const tracks = findFavorites(database.favorites.tracks, database.tracks);
+    const albums = findFavorites(database.favorites.albums, database.albums);
+    const artists = findFavorites(database.favorites.artists, database.artists);
+
+    return { artists, albums, tracks };
   }
 
   addFavorite(id: string, entity: string) {
