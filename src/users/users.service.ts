@@ -30,14 +30,9 @@ export class UsersService {
 
     database.users.push(newUser);
 
-    const response = Object.keys(newUser).reduce((obj, key) => {
-      if (key !== 'password') {
-        obj[key] = newUser[key];
-      }
-      return obj;
-    }, {});
-
-    return response as Omit<User, 'password'>;
+    const response = { ...newUser };
+    delete response.password;
+    return response;
   }
 
   getUserById(id: string): Omit<User, 'password'> {
@@ -51,13 +46,22 @@ export class UsersService {
       throw new HttpException(`User ${id} doesn't exist`, HttpStatus.NOT_FOUND);
     }
 
-    const response = Object.keys(user).reduce((obj, key) => {
-      if (key !== 'password') {
-        obj[key] = user[key];
-      }
-      return obj;
-    }, {});
+    const response = { ...user };
+    delete response.password;
+    return response;
+  }
 
-    return response as Omit<User, 'password'>;
+  deleteUserById(id: string) {
+    if (!validate(id)) {
+      throw new HttpException('userId is invalid', HttpStatus.BAD_REQUEST);
+    }
+
+    const userIndex = database.users.findIndex((user) => user.id === id);
+
+    if (userIndex === -1) {
+      throw new HttpException(`User ${id} doesn't exist`, HttpStatus.NOT_FOUND);
+    }
+
+    database.users.splice(userIndex, 1);
   }
 }

@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -29,5 +30,11 @@ export class UsersController {
   @HttpCode(HttpStatus.CREATED)
   createNewUser(@Body() dto: CreateNewUserDto) {
     return this.usersService.createNewUser(dto);
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  deleteUserById(@Param('id') id: string) {
+    return this.usersService.deleteUserById(id);
   }
 }
