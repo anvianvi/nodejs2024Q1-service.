@@ -31,7 +31,11 @@ export class AlbumsService {
   }
 
   createNewAlbum(dto: CreateNewAlbumDto) {
-    if (!dto.name || typeof dto.name !== 'string') {
+    if (
+      !dto.name ||
+      typeof dto.name !== 'string' ||
+      typeof dto.year !== 'number'
+    ) {
       throw new HttpException(
         `Bad request. body does not contain required fields`,
         HttpStatus.BAD_REQUEST,
@@ -66,9 +70,8 @@ export class AlbumsService {
     }
 
     if (
-      (dto.name && typeof dto.name !== 'string') ||
+      !dto.name ||
       typeof dto.name !== 'string' ||
-      typeof dto.artistId !== 'string' ||
       typeof dto.year !== 'number'
     ) {
       throw new HttpException(
@@ -78,7 +81,7 @@ export class AlbumsService {
     }
 
     const updatedAlbum: Album = {
-      id: id,
+      ...album,
       name: dto.name || album.name,
       year: dto.year || album.year,
       artistId: dto.artistId,

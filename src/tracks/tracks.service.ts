@@ -72,8 +72,8 @@ export class TracksService {
 
     if (
       !(dto.name && dto.duration) ||
-      typeof dto?.name !== 'string' ||
-      typeof dto?.duration !== 'number'
+      typeof dto.name !== 'string' ||
+      typeof dto.duration !== 'number'
     ) {
       throw new HttpException(
         `Bad request. body does not contain required fields`,
@@ -82,10 +82,10 @@ export class TracksService {
     }
 
     const updatedTrack: Track = {
-      id: id,
+      ...track,
       name: dto.name,
-      artistId: dto.artistId || track.artistId,
-      albumId: dto.albumId || track.albumId,
+      artistId: dto.artistId,
+      albumId: dto.albumId,
       duration: dto.duration,
     };
 

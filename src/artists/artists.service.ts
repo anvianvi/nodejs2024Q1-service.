@@ -31,7 +31,11 @@ export class ArtistsService {
   }
 
   createNewArtist(dto: CreateNewArtistDto) {
-    if (!dto.name || typeof dto.name !== 'string') {
+    if (
+      !dto.name ||
+      typeof dto.name !== 'string' ||
+      typeof dto.grammy !== 'boolean'
+    ) {
       throw new HttpException(
         `Bad request. body does not contain required fields`,
         HttpStatus.BAD_REQUEST,
@@ -61,11 +65,16 @@ export class ArtistsService {
     const artistIndex = database.artists.findIndex(
       (artist) => artist.id === id,
     );
+
     if (!artist) {
       throw new HttpException(`Artist was not found`, HttpStatus.NOT_FOUND);
     }
 
-    if (dto.name && typeof dto.name !== 'string') {
+    if (
+      !dto.name ||
+      typeof dto.name !== 'string' ||
+      typeof dto.grammy !== 'boolean'
+    ) {
       throw new HttpException(
         `Bad request. body does not contain required fields`,
         HttpStatus.BAD_REQUEST,
@@ -73,9 +82,9 @@ export class ArtistsService {
     }
 
     const updatedArtist: Artist = {
-      id: id,
-      name: dto.name || artist.name,
-      grammy: dto.grammy || artist.grammy,
+      ...artist,
+      name: dto.name,
+      grammy: dto.grammy,
     };
 
     database.artists[artistIndex] = updatedArtist;
