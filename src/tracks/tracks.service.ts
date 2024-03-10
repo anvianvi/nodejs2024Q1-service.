@@ -15,7 +15,7 @@ export class TracksService {
   getTrackById(id: string) {
     if (!validate(id)) {
       throw new HttpException(
-        `Bad request. userId is invalid (not uuid)`,
+        `Bad request. trackId is invalid (not uuid)`,
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -32,8 +32,8 @@ export class TracksService {
   createNewTrack(dto: CreateNewTrackDto) {
     if (
       !(dto.name && dto.duration) ||
-      typeof dto?.name !== 'string' ||
-      typeof dto?.duration !== 'number'
+      typeof dto.name !== 'string' ||
+      typeof dto.duration !== 'number'
     ) {
       throw new HttpException(
         `Bad request. body does not contain required fields`,

@@ -41,9 +41,9 @@ export class UsersController {
   @HttpCode(HttpStatus.OK)
   updateUserPassword(
     @Param('id') id: string,
-    @Body() updateUserPasswordDto: UpdateUserPasswordDto,
+    @Body() dto: UpdateUserPasswordDto,
   ) {
-    return this.usersService.updateUserPassword(id, updateUserPasswordDto);
+    return this.usersService.updateUserPassword(id, dto);
   }
 
   @Delete(':id')

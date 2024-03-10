@@ -22,7 +22,6 @@ export class TracksController {
   @Get()
   @HttpCode(HttpStatus.OK)
   getAllTracks() {
-    console.log('i try to get all traks');
     return this.tracksService.getAllTracks();
   }
 
@@ -34,17 +33,14 @@ export class TracksController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  createNewTrack(@Body() createNewTrackDto: CreateNewTrackDto) {
-    return this.tracksService.createNewTrack(createNewTrackDto);
+  createNewTrack(@Body() dto: CreateNewTrackDto) {
+    return this.tracksService.createNewTrack(dto);
   }
 
   @Put(':id')
   @HttpCode(HttpStatus.OK)
-  updateTrackInfo(
-    @Param('id') id: string,
-    @Body() updateTrackDto: UpdateTrackDto,
-  ) {
-    return this.tracksService.updateTrackInfo(id, updateTrackDto);
+  updateTrackInfo(@Param('id') id: string, @Body() dto: UpdateTrackDto) {
+    return this.tracksService.updateTrackInfo(id, dto);
   }
 
   @Delete(':id')
