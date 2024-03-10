@@ -1,21 +1,21 @@
 import { IsString, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateNewUserDto {
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   login: string;
 
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   password: string;
 }
 
 export class UpdateUserPasswordDto {
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   oldPassword: string;
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   newPassword: string;
 }
 
@@ -24,12 +24,12 @@ export class CreateNewTrackDto {
   @IsString()
   name: string;
 
-  @IsString()
   @IsOptional()
+  @IsString()
   artistId: string;
 
-  @IsString()
   @IsOptional()
+  @IsString()
   albumId: string;
 
   @IsNotEmpty()
@@ -38,8 +38,8 @@ export class CreateNewTrackDto {
 }
 
 export class UpdateTrackDto {
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   name: string;
 
   @IsOptional()
@@ -53,4 +53,32 @@ export class UpdateTrackDto {
   @IsOptional()
   @IsString()
   albumId: string;
+}
+
+export class CreateNewAlbumDto {
+  @IsNotEmpty()
+  @IsString()
+  name: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  year: number;
+
+  @IsOptional()
+  @IsString()
+  artistId: string;
+}
+
+export class UpdateAlbumDto {
+  @IsOptional()
+  @IsString()
+  name: string;
+
+  @IsOptional()
+  @IsNumber()
+  year: number;
+
+  @IsOptional()
+  @IsString()
+  artistId: string;
 }
