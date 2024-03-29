@@ -1,3 +1,11 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -5,39 +13,49 @@ datasource db {
 
 model User {
   id        String   @id @default(uuid())
-  login     String   @unique
+  login     String
   password  String
-  version   Int      @default(0)
+  version   Int      @default(1)
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Artist {
-  id      String  @id @default(uuid())
-  name    String  @unique
-  grammy  Boolean
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Album {
-  id      String  @id @default(uuid())
-  name    String  @unique
-  year    Int?
-  artist  Artist  @relation(fields: [artistId], references: [id])
-  artistId String  @unique
+  id          String     @id @default(uuid())
+  name        String
+  year        Int
+  artistId    String?
+  artist      Artist?    @relation(fields: [artistId], references: [id])
+  track       Track[]
+  favoritesId String?
+  Favorites   Favorites? @relation(fields: [favoritesId], references: [id], onDelete: Cascade)
+}
+
+model Artist {
+  id     String  @id @default(uuid())
+  name   String
+  grammy Boolean
+  album  Album[]
+  track       Track[]
+  favoritesId String?
+  Favorites   Favorites? @relation(fields: [favoritesId], references: [id], onDelete: Cascade)
 }
 
 model Track {
-  id        String  @id @default(uuid())
-  name      String
-  duration  Int
-  artist    Artist  @relation(fields: [artistId], references: [id])
-  artistId String?
-  album     Album   @relation(fields: [albumId], references: [id])
-  albumId  String?
+  id          String     @id @default(uuid())
+  name        String
+  duration    Int
+  artistId    String?
+  albumId     String?
+  artist      Artist?    @relation(fields: [artistId], references: [id], onDelete: SetNull)
+  album       Album?     @relation(fields: [albumId], references: [id], onDelete: SetNull)
+  favoritesId String?
+  Favorites   Favorites? @relation(fields: [favoritesId], references: [id], onDelete: Cascade)
 }
 
 model Favorites {
-  artists  String[]
-  albums   String[]
-  tracks    String[]
+  id      String   @id @default(uuid())
+  artists Artist[]
+  albums  Album[]
+  tracks  Track[]
 }
