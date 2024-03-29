@@ -1,5 +1,4 @@
 import { NestFactory } from '@nestjs/core';
-import { ConfigService } from '@nestjs/config';
 import { SwaggerModule, OpenAPIObject } from '@nestjs/swagger';
 import { load } from 'js-yaml';
 import { readFile } from 'node:fs/promises';
@@ -9,8 +8,7 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const configService = app.get(ConfigService);
-  const PORT = configService.get('PORT', 4001);
+  const PORT = process.env.PORT || 4001;
 
   const file = await readFile(join(__dirname, '..', 'doc', 'api.yaml'), 'utf8');
   const document = load(file) as OpenAPIObject;
