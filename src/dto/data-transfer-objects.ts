@@ -6,25 +6,6 @@ import {
   IsBoolean,
 } from 'class-validator';
 
-export class CreateNewUserDto {
-  @IsNotEmpty()
-  @IsString()
-  login: string;
-
-  @IsNotEmpty()
-  @IsString()
-  password: string;
-}
-
-export class UpdateUserPasswordDto {
-  @IsNotEmpty()
-  @IsString()
-  oldPassword: string;
-  @IsNotEmpty()
-  @IsString()
-  newPassword: string;
-}
-
 export class CreateNewTrackDto {
   @IsNotEmpty()
   @IsString()

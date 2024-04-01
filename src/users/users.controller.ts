@@ -10,10 +10,9 @@ import {
   Put,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import {
-  CreateNewUserDto,
-  UpdateUserPasswordDto,
-} from 'src/dto/data-transfer-objects';
+import { User } from './entities/user.entity';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
 export class UsersController {
@@ -21,28 +20,26 @@ export class UsersController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  getAllUsers() {
-    return this.usersService.getAllUsers();
+  async findAll(): Promise<User[]> {
+    const users = await this.usersService.findAll();
+    return users;
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   getUserById(@Param('id') id: string) {
-    return this.usersService.getUserById(id);
+    return this.usersService.findUnique(id);
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  createNewUser(@Body() dto: CreateNewUserDto) {
+  createNewUser(@Body() dto: CreateUserDto) {
     return this.usersService.createNewUser(dto);
   }
 
   @Put(':id')
   @HttpCode(HttpStatus.OK)
-  updateUserPassword(
-    @Param('id') id: string,
-    @Body() dto: UpdateUserPasswordDto,
-  ) {
+  updateUserPassword(@Param('id') id: string, @Body() dto: UpdateUserDto) {
     return this.usersService.updateUserPassword(id, dto);
   }
 

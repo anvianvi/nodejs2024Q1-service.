@@ -21,6 +21,9 @@ npm install
 
 ## Running application
 
+instal Docker decstop
+run PostgreSQL Container using Docker
+
 ```
 npm start
 ```
