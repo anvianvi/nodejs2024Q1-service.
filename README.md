@@ -35,7 +35,9 @@ For more information about OpenAPI/Swagger please visit https://swagger.io/.
 ## Testing
 
 clone repo, switch to develop-week-1 branch
+
 run npm install
+
 run npm start or npm start:dev
 
 After application running open new terminal and enter:
